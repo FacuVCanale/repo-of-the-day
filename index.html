@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repo del Día</title>
+  <title>Repo of the Day</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -153,12 +153,12 @@
 <body>
   <div class="container">
     <p class="date" id="date"></p>
-    <h1>Repo del Día</h1>
+    <h1>Repo of the Day</h1>
     <div id="content">
-      <p class="loading">Buscando el repo del día<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
+      <p class="loading">Finding today's repo<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
     </div>
     <footer>
-      Datos de <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      Powered by <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
     </footer>
   </div>
 
@@ -186,7 +186,7 @@
     function displayDate() {
       const d = new Date();
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('date').textContent = d.toLocaleDateString('es-ES', options);
+      document.getElementById('date').textContent = d.toLocaleDateString('en-US', options);
     }
 
     function seededIndex(dateStr, max) {
@@ -240,7 +240,7 @@
         const data = await res.json();
 
         if (!data.items || data.items.length === 0) {
-          content.innerHTML = '<p class="error">No se encontraron repos hoy. Volvé más tarde.</p>';
+          content.innerHTML = '<p class="error">No repos found today. Check back later.</p>';
           return;
         }
 
@@ -250,7 +250,7 @@
 
         content.innerHTML = renderRepo(repo);
       } catch (err) {
-        content.innerHTML = `<p class="error">Error al cargar: ${err.message}</p>`;
+        content.innerHTML = `<p class="error">Failed to load: ${err.message}</p>`;
       }
     }
 
