@@ -11,8 +11,16 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Spectral:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'Geist Mono';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/GeistMono-Variable.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       --bg: #07070b;
       --gold: #c4a35a;
@@ -120,7 +128,7 @@
 
     /* ===== Date ===== */
     .date {
-      font-family: 'DM Mono', monospace;
+      font-family: 'Geist Mono', monospace;
       font-size: 0.72rem;
       font-weight: 300;
       color: var(--text-dim);
@@ -203,7 +211,7 @@
 
     /* ===== Owner ===== */
     .owner {
-      font-family: 'DM Mono', monospace;
+      font-family: 'Geist Mono', monospace;
       font-size: 0.78rem;
       font-weight: 300;
       color: var(--text-dim);
@@ -253,7 +261,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 24px;
-      font-family: 'DM Mono', monospace;
+      font-family: 'Geist Mono', monospace;
       font-size: 0.75rem;
       font-weight: 300;
       color: var(--text-dim);
@@ -283,7 +291,7 @@
 
     /* ===== Loading ===== */
     .loading {
-      font-family: 'DM Mono', monospace;
+      font-family: 'Geist Mono', monospace;
       font-size: 0.82rem;
       font-weight: 300;
       color: var(--text-dim);
@@ -310,7 +318,7 @@
 
     /* ===== Error ===== */
     .error {
-      font-family: 'DM Mono', monospace;
+      font-family: 'Geist Mono', monospace;
       font-size: 0.82rem;
       font-weight: 400;
       color: #c45a5a;
@@ -320,7 +328,7 @@
     /* ===== Footer ===== */
     footer {
       margin-top: 52px;
-      font-family: 'DM Mono', monospace;
+      font-family: 'Geist Mono', monospace;
       font-size: 0.68rem;
       font-weight: 300;
       color: var(--text-muted);
