@@ -4,7 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Repo of the Day</title>
+  <meta name="description" content="One standout GitHub repo, every day. Zero noise.">
+  <meta property="og:title" content="Repo of the Day">
+  <meta property="og:description" content="One standout GitHub repo, every day. Zero noise.">
+  <meta name="theme-color" content="#07070b">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Spectral:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #07070b;
+      --gold: #c4a35a;
+      --gold-bright: #e0c878;
+      --gold-dim: rgba(196, 163, 90, 0.15);
+      --gold-faint: rgba(196, 163, 90, 0.06);
+      --text: #e8e4dc;
+      --text-dim: #706c65;
+      --text-muted: #3d3a35;
+      --card-bg: rgba(196, 163, 90, 0.025);
+      --card-border: rgba(196, 163, 90, 0.1);
+      --card-border-hover: rgba(196, 163, 90, 0.3);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
@@ -12,88 +34,231 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      padding: 20px;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      overflow-x: hidden;
+      font-family: 'Spectral', Georgia, serif;
     }
 
+    /* ===== Starfield ===== */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stars::before,
+    .stars::after {
+      content: '';
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      border-radius: 50%;
+      top: 0;
+      left: 0;
+    }
+
+    .stars::after {
+      animation: twinkle 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ===== Spotlight ===== */
+    .spotlight {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 700px 500px at 50% 45%, rgba(196,163,90,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 400px 300px at 50% 50%, rgba(196,163,90,0.02) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 2s ease-out 0.3s forwards;
+    }
+
+    /* ===== Grain ===== */
+    .grain {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.04;
+    }
+
+    /* ===== Viewfinder ===== */
+    .viewfinder {
+      position: fixed;
+      width: min(500px, 90vw);
+      height: min(500px, 90vw);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 2s ease-out 0.5s forwards;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* ===== Container ===== */
     .container {
-      max-width: 620px;
+      max-width: 640px;
       width: 100%;
       text-align: center;
+      position: relative;
+      z-index: 10;
     }
 
+    /* ===== Date ===== */
     .date {
-      font-size: 0.85rem;
-      color: #7d8590;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 300;
+      color: var(--text-dim);
       text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.8s ease-out 0.6s forwards;
     }
 
-    h1 {
-      font-size: 1.4rem;
+    /* ===== Title ===== */
+    .title {
+      font-family: 'Bodoni Moda', 'Didot', 'Times New Roman', serif;
+      font-size: clamp(2.4rem, 6vw, 3.4rem);
       font-weight: 400;
-      color: #7d8590;
-      margin-bottom: 48px;
+      color: var(--text);
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+      margin-bottom: 36px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.8s ease-out 0.8s forwards;
     }
 
+    .title em {
+      font-style: italic;
+      color: var(--text-dim);
+    }
+
+    /* ===== Gold Rule ===== */
+    .rule {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 44px;
+      animation: ruleExpand 1s ease-out 1.0s forwards;
+    }
+
+    @keyframes ruleExpand { to { width: 100px; } }
+
+    /* ===== Card ===== */
     .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      padding: 40px 32px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 2px;
+      padding: 44px 40px;
       text-align: left;
-      transition: border-color 0.2s;
+      position: relative;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.45s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     }
 
-    .card:hover {
-      border-color: #58a6ff;
+    .card.revealed {
+      opacity: 1;
+      transform: translateY(0);
     }
 
+    .card.revealed:hover {
+      transform: translateY(-2px);
+      border-color: var(--card-border-hover);
+      box-shadow: 0 8px 40px rgba(196, 163, 90, 0.05);
+    }
+
+    /* Card inner stagger */
+    .card .owner,
+    .card .repo-name,
+    .card .description,
+    .card .meta {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .card.revealed .owner     { opacity: 1;    transform: none; transition-delay: 0.08s; }
+    .card.revealed .repo-name { opacity: 1;    transform: none; transition-delay: 0.16s; }
+    .card.revealed .description { opacity: 0.85; transform: none; transition-delay: 0.24s; }
+    .card.revealed .meta      { opacity: 1;    transform: none; transition-delay: 0.32s; }
+
+    /* ===== Owner ===== */
     .owner {
-      font-size: 0.9rem;
-      color: #7d8590;
-      margin-bottom: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .owner img {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      vertical-align: middle;
-      margin-right: 6px;
+      opacity: 0.8;
+      border: 1px solid rgba(196,163,90,0.1);
     }
 
+    /* ===== Repo Name ===== */
     .repo-name {
-      font-size: 1.8rem;
-      font-weight: 600;
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.65rem;
+      font-weight: 700;
       margin-bottom: 16px;
+      line-height: 1.3;
     }
 
     .repo-name a {
-      color: #58a6ff;
+      color: var(--gold);
       text-decoration: none;
+      transition: color 0.3s ease;
     }
 
-    .repo-name a:hover {
-      text-decoration: underline;
-    }
+    .repo-name a:hover { color: var(--gold-bright); }
 
+    /* ===== Description ===== */
     .description {
-      font-size: 1.05rem;
-      color: #c9d1d9;
-      line-height: 1.6;
-      margin-bottom: 24px;
+      font-family: 'Spectral', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 28px;
     }
 
+    /* ===== Meta ===== */
     .meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
-      font-size: 0.85rem;
-      color: #7d8590;
+      gap: 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--text-dim);
+      padding-top: 20px;
+      border-top: 1px solid var(--gold-faint);
     }
 
     .meta-item {
@@ -103,26 +268,37 @@
     }
 
     .lang-dot {
-      width: 12px;
-      height: 12px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       display: inline-block;
     }
 
-    .star-icon, .fork-icon {
-      width: 16px;
-      height: 16px;
-      fill: #7d8590;
+    .meta-icon {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      opacity: 0.6;
     }
 
+    /* ===== Loading ===== */
     .loading {
-      color: #7d8590;
-      font-size: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      padding: 40px 0;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.6s ease-out 1.0s forwards;
     }
 
     .loading .dot {
-      animation: blink 1.4s infinite;
+      color: var(--gold);
+      animation: blink 1.4s ease-in-out infinite;
     }
+
     .loading .dot:nth-child(2) { animation-delay: 0.2s; }
     .loading .dot:nth-child(3) { animation-delay: 0.4s; }
 
@@ -132,30 +308,80 @@
       100% { opacity: 0; }
     }
 
+    /* ===== Error ===== */
     .error {
-      color: #f85149;
-      font-size: 0.95rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: #c45a5a;
+      padding: 40px 0;
     }
 
+    /* ===== Footer ===== */
     footer {
-      margin-top: 48px;
-      font-size: 0.8rem;
-      color: #484f58;
-      text-align: center;
+      margin-top: 52px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fadeUp 0.6s ease-out 1.2s forwards;
     }
 
     footer a {
-      color: #58a6ff;
+      color: var(--text-dim);
       text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover { color: var(--gold); }
+
+    /* ===== Shared Keyframes ===== */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 520px) {
+      .card { padding: 32px 24px; }
+      .repo-name { font-size: 1.35rem; }
+      .meta { gap: 16px; }
     }
   </style>
 </head>
 <body>
+  <!-- Atmospheric layers -->
+  <div class="stars" aria-hidden="true"></div>
+  <div class="spotlight" aria-hidden="true"></div>
+
+  <!-- Grain overlay -->
+  <svg class="grain" aria-hidden="true">
+    <filter id="grain-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-filter)"/>
+  </svg>
+
+  <!-- Viewfinder decorative element -->
+  <svg class="viewfinder" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+    <circle cx="200" cy="200" r="195" stroke="rgba(196,163,90,0.04)" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="150" stroke="rgba(196,163,90,0.03)" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="105" stroke="rgba(196,163,90,0.025)" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="60" stroke="rgba(196,163,90,0.02)" stroke-width="0.5"/>
+    <line x1="200" y1="0" x2="200" y2="400" stroke="rgba(196,163,90,0.015)" stroke-width="0.5"/>
+    <line x1="0" y1="200" x2="400" y2="200" stroke="rgba(196,163,90,0.015)" stroke-width="0.5"/>
+  </svg>
+
+  <!-- Content -->
   <div class="container">
     <p class="date" id="date"></p>
-    <h1>Repo of the Day</h1>
+    <h1 class="title">Repo <em>of the</em> Day</h1>
+    <div class="rule"></div>
     <div id="content">
-      <p class="loading">Finding today's repo<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
+      <p class="loading">Scanning the stars<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
     </div>
     <footer>
       Powered by <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
@@ -163,30 +389,54 @@
   </div>
 
   <script>
+    // Generate deterministic starfield
+    (function() {
+      let s = 42;
+      function rand() { s = (s * 16807) % 2147483647; return s / 2147483647; }
+
+      const dim = [], bright = [];
+      for (let i = 0; i < 150; i++) {
+        const x = rand() * 100, y = rand() * 100, o = 0.08 + rand() * 0.22;
+        dim.push(`${x.toFixed(1)}vw ${y.toFixed(1)}vh 0 0 rgba(255,255,255,${o.toFixed(2)})`);
+      }
+      for (let i = 0; i < 30; i++) {
+        const x = rand() * 100, y = rand() * 100, o = 0.15 + rand() * 0.3;
+        bright.push(`${x.toFixed(1)}vw ${y.toFixed(1)}vh 0 0.5px rgba(255,248,230,${o.toFixed(2)})`);
+      }
+
+      const style = document.createElement('style');
+      style.textContent = `.stars::before{box-shadow:${dim.join(',')}}.stars::after{box-shadow:${bright.join(',')}}`;
+      document.head.appendChild(style);
+    })();
+
     const LANG_COLORS = {
-      JavaScript: '#f1e05a', TypeScript: '#3178c6', Python: '#3572A5',
-      Java: '#b07219', Go: '#00ADD8', Rust: '#dea584', C: '#555555',
-      'C++': '#f34b7d', 'C#': '#178600', Ruby: '#701516', PHP: '#4F5D95',
-      Swift: '#F05138', Kotlin: '#A97BFF', Dart: '#00B4AB', Lua: '#000080',
-      Shell: '#89e051', Vim: '#199f4b', HTML: '#e34c26', CSS: '#563d7c',
-      Scala: '#c22d40', Elixir: '#6e4a7e', Haskell: '#5e5086',
-      Zig: '#ec915c', Jupyter: '#DA5B0B', Vue: '#41b883', Svelte: '#ff3e00',
+      JavaScript:'#f1e05a',TypeScript:'#3178c6',Python:'#3572A5',
+      Java:'#b07219',Go:'#00ADD8',Rust:'#dea584',C:'#555555',
+      'C++':'#f34b7d','C#':'#178600',Ruby:'#701516',PHP:'#4F5D95',
+      Swift:'#F05138',Kotlin:'#A97BFF',Dart:'#00B4AB',Lua:'#000080',
+      Shell:'#89e051',Vim:'#199f4b',HTML:'#e34c26',CSS:'#563d7c',
+      Scala:'#c22d40',Elixir:'#6e4a7e',Haskell:'#5e5086',
+      Zig:'#ec915c',Jupyter:'#DA5B0B',Vue:'#41b883',Svelte:'#ff3e00',
     };
 
+    function esc(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
     function formatNumber(n) {
-      if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-      return n.toString();
+      return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : n.toString();
     }
 
     function todayString() {
-      const d = new Date();
-      return d.toISOString().split('T')[0];
+      return new Date().toISOString().split('T')[0];
     }
 
     function displayDate() {
-      const d = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('date').textContent = d.toLocaleDateString('en-US', options);
+      document.getElementById('date').textContent = new Date().toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
     }
 
     function seededIndex(dateStr, max) {
@@ -200,25 +450,25 @@
 
     function renderRepo(repo) {
       const langDot = repo.language
-        ? `<span class="lang-dot" style="background:${LANG_COLORS[repo.language] || '#7d8590'}"></span>${repo.language}`
+        ? `<span class="lang-dot" style="background:${LANG_COLORS[repo.language] || '#7d8590'}"></span>${esc(repo.language)}`
         : '';
 
       return `
         <div class="card">
           <p class="owner">
-            <img src="${repo.owner.avatar_url}" alt="" loading="lazy">
-            ${repo.owner.login}
+            <img src="${esc(repo.owner.avatar_url)}" alt="" loading="lazy">
+            ${esc(repo.owner.login)}
           </p>
-          <p class="repo-name"><a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a></p>
-          ${repo.description ? `<p class="description">${repo.description}</p>` : ''}
+          <p class="repo-name"><a href="${esc(repo.html_url)}" target="_blank" rel="noopener">${esc(repo.name)}</a></p>
+          ${repo.description ? `<p class="description">${esc(repo.description)}</p>` : ''}
           <div class="meta">
             ${langDot ? `<span class="meta-item">${langDot}</span>` : ''}
             <span class="meta-item">
-              <svg class="star-icon" viewBox="0 0 16 16"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"/></svg>
+              <svg class="meta-icon" viewBox="0 0 16 16"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"/></svg>
               ${formatNumber(repo.stargazers_count)}
             </span>
             <span class="meta-item">
-              <svg class="fork-icon" viewBox="0 0 16 16"><path fill="currentColor" d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 0-1.5 0v.878H6.75v-.878a2.25 2.25 0 1 0-1.5 0ZM8 14.25a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-.75.75Z"/></svg>
+              <svg class="meta-icon" viewBox="0 0 16 16"><path fill="currentColor" d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 0-1.5 0v.878H6.75v-.878a2.25 2.25 0 1 0-1.5 0ZM8 14.25a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-.75.75Z"/></svg>
               ${formatNumber(repo.forks_count)}
             </span>
           </div>
@@ -229,10 +479,8 @@
     async function fetchRepoOfTheDay() {
       const content = document.getElementById('content');
       const today = todayString();
-
-      // Search for repos created in the last 7 days, sorted by stars
-      const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
-      const url = `https://api.github.com/search/repositories?q=created:>${weekAgo}&sort=stars&order=desc&per_page=30`;
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+      const url = `https://api.github.com/search/repositories?q=created:>${yesterday}&sort=stars&order=desc&per_page=30`;
 
       try {
         const res = await fetch(url);
@@ -244,13 +492,17 @@
           return;
         }
 
-        // Pick one deterministically based on today's date
         const idx = seededIndex(today, Math.min(data.items.length, 10));
-        const repo = data.items[idx];
+        content.innerHTML = renderRepo(data.items[idx]);
 
-        content.innerHTML = renderRepo(repo);
+        // Force reflow then trigger reveal animation
+        const card = content.querySelector('.card');
+        if (card) {
+          card.offsetHeight;
+          card.classList.add('revealed');
+        }
       } catch (err) {
-        content.innerHTML = `<p class="error">Failed to load: ${err.message}</p>`;
+        content.innerHTML = `<p class="error">Failed to load — ${esc(err.message)}</p>`;
       }
     }
 
