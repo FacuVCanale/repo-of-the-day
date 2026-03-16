@@ -37,15 +37,18 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html, body {
+      height: 100vh;
+      overflow: hidden;
+    }
+
     body {
-      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background: var(--bg);
       color: var(--text);
       padding: 24px;
-      overflow-x: hidden;
       font-family: 'Spectral', Georgia, serif;
     }
 
