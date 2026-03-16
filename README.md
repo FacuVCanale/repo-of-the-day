@@ -28,7 +28,7 @@ Single HTML file. No build step. No backend. No tracking.
 
 ```bash
 git clone https://github.com/FacuVCanale/repo-del-dia.git
-open repo-del-dia/index.html
+open repo-of-the-day/index.html
 ```
 
 ## License
